@@ -1,7 +1,6 @@
 import React from "react"
 import { GiHamburgerMenu } from 'react-icons/gi'
 
-
 export default function Navigation({ children }) {
   return (
     <>

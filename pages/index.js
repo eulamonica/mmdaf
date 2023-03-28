@@ -1,10 +1,7 @@
 import Head from 'next/head'
-import { useUser } from '@auth0/nextjs-auth0/client';
 import Navigation from '@/components/Navigation'
 import Drawer from '@/components/Drawer';
 export default function Home() {
-  const { user, error, isLoading } = useUser();
-
   return (
     <>
       <Head>
