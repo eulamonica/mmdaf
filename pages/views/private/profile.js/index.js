@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 
 export default function Profile() {
   return (
-    <h1> VehicleType </h1>
+    <h1> Profile </h1>
   )
 }
 

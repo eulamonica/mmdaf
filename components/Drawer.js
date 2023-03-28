@@ -48,7 +48,7 @@ const drawerRouter = [
   {
     text: "Profile",
     icon: <MdSupervisedUserCircle />,
-    route: '/views/public/profile.js'
+    route: '/views/private/profile.js'
   },
 ]
 export default function Drawer({ children }) {
@@ -86,7 +86,7 @@ export default function Drawer({ children }) {
             drawerRouter?.map((value, index) => {
               if (value.hasOwnProperty('text_category'))
                 return (
-                  <li className="menu-title mt-5">
+                  <li className="menu-title mt-5" key={index} >
                     <span>{value.text_category}</span>
                   </li>
                 )
