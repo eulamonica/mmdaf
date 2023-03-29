@@ -1,11 +1,16 @@
-import { useUser } from "@auth0/nextjs-auth0/client"
+import { useRouter } from "next/router"
 import { GiHamburgerMenu } from 'react-icons/gi'
 import Link from 'next/link'
 import React from "react"
 
 export default function Navigation({ children }) {
 
-  const { user, error, isLoading } = useUser();
+  const router = useRouter()
+
+  const handleChangeRoute = (href) => {
+    router.push(href)
+  }
+
   return (
     <>
 
@@ -19,26 +24,22 @@ export default function Navigation({ children }) {
           <a className="btn btn-ghost normal-case text-xl">MMDA Forecasting</a>
         </div>
         <div className="flex-none">
-          {!user && (
-            <>
-              <button className="btn btn-ouline btn-ghost">
-                Login
-              </button>
-              <button className="btn btn-ouline btn-ghost">
-                Sign Up
-              </button>
-            </>
-          )}
-          {
-            user &&
-            (
-              <>
 
-                Welcome {user.name}!  <Link className="btn btn-square btn-ghost" href="/api/auth/logout">Logout</Link>
-              </>
+          <>
+            <button className="btn btn-ouline btn-ghost" onClick={() => handleChangeRoute('/views/public/auth/login')}>
+              Login
+            </button>
+            <button className="btn btn-ouline btn-ghost" onClick={() => handleChangeRoute('/views/public/auth/register')}>
+              Sign Up
+            </button>
+          </>
 
-            )
-          }
+          <>
+            <Link className="btn btn-square btn-ghost" href="/api/auth/logout">Logout</Link>
+          </>
+
+
+
         </div>
       </div >
       {children}
