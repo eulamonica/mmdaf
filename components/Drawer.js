@@ -69,7 +69,7 @@ export default function Drawer({ children }) {
       </div>
       <div className="drawer-side">
         <label htmlFor="navigation-component" className="drawer-overlay"></label>
-        <ul className="menu w-80 bg-base-200 text-base-content shadow-xl border-current-300 border-solid">
+        <ul className="menu w-60 bg-base-200 text-base-content shadow-xl border-current-300 border-solid">
           <div className="card w-full m-0 bg-base-100 shadow-md ">
             <figure className="hover:opacity-10">
               <Image

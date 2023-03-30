@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import Drawer from "./Drawer";
 import Loading from "./Loading";
 import Navigation from "./Navigation";
-import Footer from "./footer";
+import Footer from "./Footer";
 
 export default function Layout({ children }) {
   return (

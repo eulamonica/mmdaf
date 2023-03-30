@@ -1,22 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Layout from "@/components/Layout";
 import mmdaCoverRegister from '@/assets/mmda-register-cover.webp'
 import Image from 'next/image'
-
+import { toast } from "react-toastify";
 
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [secretPassword, setSecretPassword] = useState("");
+
+  const [userData, setUserData] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    secretPassword: "",
+  })
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(username)
+    await fetch('/api/auth/register', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(userData)
+    }).then((res) => {
+      console.log(res)
+    })
   };
 
   return (
@@ -36,59 +54,65 @@ export default function Register() {
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                name='username'
                 placeholder="Username"
+                value={userData.username}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                name='firstName'
                 placeholder="First name"
+                value={userData.firstName}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                name='lastName'
                 placeholder="Last name"
+                value={userData.lastName}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name='email'
                 placeholder="Email"
+                value={userData.email}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name='password'
                 placeholder="Password"
+                value={userData.password}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                name='confirmPassword'
                 placeholder="Confirm Password"
+                value={userData.confirmPassword}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
+
               />
               <input
                 type="password"
-                value={secretPassword}
-                onChange={(e) => setSecretPassword(e.target.value)}
+                name="secretPassword"
                 placeholder="Secret Password"
+                value={userData.secretPassword}
+                onChange={handleChange}
                 className="input input-bordered w-full my-3"
-                required
               />
               <button type="submit" className="btn btn-primary mt-10 w-full">Register</button>
 
