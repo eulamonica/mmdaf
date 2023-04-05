@@ -8,18 +8,20 @@ const handler = async (req, res) => {
   await dbConnection().catch(err => res.json(err))
 
   if (req.method !== "POST")
-    return res.status(405).json({ success: false, error: "Method Not Allowed" })
-  const {
-    username,
-    firstName,
-    lastName,
-    email,
-    password,
-    confirmPassword,
-    secretPassword,
-  } = req.body
+    return res.status(405).json({
+      success: false,
+      error: [
+        {
+          message: ''
+        }
+      ]
+    })
+
+  const values = req.body;
 
 
+
+  console.log(req.body);
 }
 
 export default handler

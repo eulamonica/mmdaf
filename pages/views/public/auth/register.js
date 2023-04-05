@@ -1,120 +1,117 @@
-import React, { useState, useRef } from "react";
-import Layout from "@/components/Layout";
+import React, { useState, useRef } from 'react';
+import Layout from '@/components/Layout';
 import mmdaCoverRegister from '@/assets/mmda-register-cover.webp'
 import Image from 'next/image'
-import { toast } from "react-toastify";
+import useForm from '@/hooks/useForm'
+import Input from '@/components/Input';
+import { toast } from 'react-toastify';
 
 
 export default function Register() {
 
-  const [userData, setUserData] = useState({
-    username: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    secretPassword: "",
-  })
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await fetch('/api/auth/register', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(userData)
-    }).then((res) => {
-      console.log(res)
-    })
-  };
+
+  const [userData, userError, userHandleChange, userSubmit] = useForm('/api/auth/register', 'POST', {
+    username: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    secretPassword: '',
+  })
+
+
 
   return (
-    <div className="w-full my-10 flex justify-center">
-      <div className="card w-96 bg-base-200 shadow-xl">
-        <figure className="hover:opacity-10">
+    <div className='w-full my-10 flex justify-center'>
+      <div className='card w-full md:w-96 sm:w-80 bg-base-200 shadow-xl'>
+        <figure className='hover:opacity-10'>
           <Image
             src={mmdaCoverRegister}
-            alt="MMDA Cover login"
-            className="h-full"
+            alt='MMDA Cover login'
+            className='h-full'
+            priority
           /></figure>
-        <div className="card-body">
-          <h2 className="card-title">Register</h2>
-          <p>{"Ready to make a positive change in Metro Manila? Register now with MMDA and be part of the solution!"}</p>
+        <div className='card-body'>
+          <h2 className='card-title'>Register</h2>
 
-          <div className="card-actions justify-end">
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
+          <p>{'Ready to make a positive change in Metro Manila? Register now with MMDA and be part of the solution!'}</p>
+
+          <div className=' justify-end w-full'>
+            <form onSubmit={userSubmit}>
+
+              <Input
+                type='text'
                 name='username'
-                placeholder="Username"
-                value={userData.username}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-
+                placeholder='Username'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="What's your username? (must be unique)"
               />
-              <input
-                type="text"
+
+              <Input
+                type='text'
                 name='firstName'
-                placeholder="First name"
-                value={userData.firstName}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-
+                placeholder='First name'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="What's your first name?"
               />
-              <input
-                type="text"
+
+              <Input
+                type='text'
                 name='lastName'
-                placeholder="Last name"
-                value={userData.lastName}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-
+                placeholder='Last name'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="What's your last name?"
               />
-              <input
-                type="email"
+
+              <Input
+                type='email'
                 name='email'
-                placeholder="Email"
-                value={userData.email}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-
+                placeholder='Email'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="Email must be valid"
               />
-              <input
-                type="password"
+
+              <Input
+                type='password'
                 name='password'
-                placeholder="Password"
-                value={userData.password}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-
+                placeholder='Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="Make sure your password is strong"
               />
-              <input
-                type="password"
+
+              <Input
+                type='password'
                 name='confirmPassword'
-                placeholder="Confirm Password"
-                value={userData.confirmPassword}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
+                placeholder='Confirm Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="Must matched the password field"
+              />
 
+              <Input
+                type='password'
+                name='secretPassword'
+                placeholder='Secret Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                tooltip="This is only for valid users. Email us if you want to know more..."
               />
-              <input
-                type="password"
-                name="secretPassword"
-                placeholder="Secret Password"
-                value={userData.secretPassword}
-                onChange={handleChange}
-                className="input input-bordered w-full my-3"
-              />
-              <button type="submit" className="btn btn-primary mt-10 w-full">Register</button>
+
+              <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
 
             </form>
           </div>
