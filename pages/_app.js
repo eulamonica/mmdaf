@@ -4,10 +4,18 @@ import { ToastContainer } from 'react-toastify';
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
-  return getLayout(
+  return (
     <>
-      <Component {...pageProps} />
+      {
+        getLayout(<Component {...pageProps} />)
+      }
       <ToastContainer />
     </>
   )
+  // return getLayout(
+  //   <>
+  //     <Component {...pageProps} />
+  //     <ToastContainer />
+  //   </>
+  // )
 }

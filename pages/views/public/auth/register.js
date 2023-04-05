@@ -9,8 +9,6 @@ import { toast } from 'react-toastify';
 
 export default function Register() {
 
-
-
   const [userData, userError, userHandleChange, userSubmit] = useForm('/api/auth/register', 'POST', {
     username: '',
     firstName: '',
@@ -20,8 +18,6 @@ export default function Register() {
     confirmPassword: '',
     secretPassword: '',
   })
-
-
 
   return (
     <div className='w-full my-10 flex justify-center'>

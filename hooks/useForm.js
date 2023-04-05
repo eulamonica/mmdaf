@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import { toast } from 'react-toastify';
+import PopUp from "@/components/PopUp";
 // Renamed the function to useForm (custom hooks should use the "use" prefix)
 function useForm(apiUrl, action, initialValues) {
 
@@ -34,8 +35,23 @@ function useForm(apiUrl, action, initialValues) {
       method: action,
       body: JSON.stringify(formValues),
     })
-      .then(async (res) => {
-        console.log(res);
+      .then(async (response) => {
+        const data = await response.json();
+        if (data.success === false) {
+          setErrorValues(data.errors);
+        }
+        if (data.toast) {
+          data.toast.forEach(async (message) => {
+            toast(<PopUp message={message.message} type={message.type} />, {
+              autoClose: 2000,
+              position: toast.POSITION.TOP_RIGHT,
+              progress: undefined,
+              hideProgressBar: true,
+              closeButton: false,
+            });
+          })
+        }
+
       })
       .catch(async (error) => {
         console.log(error);
