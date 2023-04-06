@@ -11,10 +11,12 @@ import useCountdown from '@/hooks/useCountdown';
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
 
-// verify token
 
 // Resend Email Page - email or username 
 // Resend Email Page
+// forgot password - request change password email verification 
+// change password then redirect to login
+// middle
 
 export default function Register() {
 

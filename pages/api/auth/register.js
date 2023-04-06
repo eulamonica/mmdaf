@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import { v4 } from "uuid";
 import { hash } from "bcryptjs"
 import { dbConnection } from "@/lib/mongodb"
