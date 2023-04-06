@@ -1,18 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
-// Renamed the function to useForm (custom hooks should use the "use" prefix)
-function useForm(apiUrl, action, initialValues) {
+
+
+
+function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, errorCallback, finishCallback) {
+
+  const onSubmitCallback = useRef();
+  const onSuccessCallback = useRef();
+  const onErrorCallback = useRef();
+  const onFinishedCallback = useRef();
+
 
   const filledInitialValues = Object.fromEntries(
     Object.keys(initialValues).map((key) => [key, initialValues[key] !== undefined ? initialValues[key] : ""])
   );
 
-
   const [formValues, setFormValues] = useState(filledInitialValues);
   const [errorValues, setErrorValues] = useState({});
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    if (typeof submitCallback === "function")
+      onSubmitCallback.current = submitCallback
+    if (typeof succesCallback === "function")
+      onSuccessCallback.current = succesCallback
+    if (typeof errorCallback === "function")
+      onErrorCallback.current = errorCallback
+    if (typeof errorCallback === "function")
+      onFinishedCallback.current = finishCallback;
+
     const initialErrorValues = {};
     for (const key in initialValues) {
       initialErrorValues[key] = [];
@@ -29,7 +47,11 @@ function useForm(apiUrl, action, initialValues) {
   }
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
+    if (onSubmitCallback.current) {
+      onSubmitCallback.current(formValues)
+    };
     await fetch(apiUrl, {
       headers: { "Content-Type": "application/json" },
       method: action,
@@ -37,8 +59,15 @@ function useForm(apiUrl, action, initialValues) {
     })
       .then(async (response) => {
         const data = await response.json();
-        if (data.success === false) {
+        if (data.success) {
+          if (onSuccessCallback.current) {
+            onSuccessCallback.current(data);
+          }
+        } else {
           setErrorValues(data.errors);
+          if (onErrorCallback.current) {
+            onErrorCallback.current(data.errors);
+          }
         }
         if (data.toast) {
           data.toast.forEach(async (message) => {
@@ -51,14 +80,18 @@ function useForm(apiUrl, action, initialValues) {
             });
           })
         }
-
       })
       .catch(async (error) => {
         console.log(error);
       });
+    setIsLoading(false);
+    if (onFinishedCallback.current) {
+      onFinishedCallback.current(formValues)
+    }
+
   };
 
-  return [formValues, errorValues, handleChange, handleSubmit];
+  return [formValues, errorValues, isLoading, handleChange, handleSubmit];
 }
 
 export default useForm;

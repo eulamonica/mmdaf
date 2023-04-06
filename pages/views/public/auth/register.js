@@ -9,7 +9,22 @@ import { toast } from 'react-toastify';
 
 export default function Register() {
 
-  const [userData, userError, userHandleChange, userSubmit] = useForm('/api/auth/register', 'POST', {
+  function onSubmit(values) {
+    console.log(values)
+  }
+
+  function onSuccess(data) {
+    console.log(data);
+  }
+
+  function onErrorCallback(errors) {
+    console.log(errors)
+  }
+  function onFinishedCallback(values) {
+    console.log(values)
+  }
+
+  const [userData, userError, isUserLoading, userHandleChange, userSubmit] = useForm('/api/auth/register', 'POST', {
     username: '',
     firstName: '',
     lastName: '',
@@ -17,7 +32,11 @@ export default function Register() {
     password: '',
     confirmPassword: '',
     secretPassword: '',
-  })
+  },
+    onSubmit,
+    onSuccess,
+    onErrorCallback,
+    onFinishedCallback)
 
   return (
     <div className='w-full my-10 flex justify-center'>
@@ -35,6 +54,7 @@ export default function Register() {
           <p>{'Ready to make a positive change in Metro Manila? Register now with MMDA and be part of the solution!'}</p>
 
           <div className=' justify-end w-full'>
+            {isUserLoading && <progress className="progress progress-primary w-full"></progress>}
             <form onSubmit={userSubmit}>
 
               <Input
@@ -44,6 +64,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="What's your username? (must be unique)"
               />
 
@@ -54,6 +75,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="What's your first name?"
               />
 
@@ -64,6 +86,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="What's your last name?"
               />
 
@@ -74,6 +97,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="Email must be valid"
               />
 
@@ -84,6 +108,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="Make sure your password is strong"
               />
 
@@ -94,6 +119,7 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="Must matched the password field"
               />
 
@@ -104,11 +130,12 @@ export default function Register() {
                 value={userData}
                 onChange={userHandleChange}
                 error={userError}
+                isLoading={isUserLoading}
                 tooltip="This is only for valid users. Email us if you want to know more..."
               />
 
               <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
-
+              {isUserLoading && <progress className="progress progress-primary w-full"></progress>}
             </form>
           </div>
         </div>

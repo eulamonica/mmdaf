@@ -39,6 +39,14 @@ const UserSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
+  },
+  emailToken: {
+    required: true,
+    type: String,
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
   }
 });
 

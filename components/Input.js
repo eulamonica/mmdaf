@@ -1,15 +1,21 @@
 import { IsEmptyObject } from "@/helpers";
 import React, { useState } from "react";
-import { FaQuestion } from "react-icons/fa";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 
 
+export default function Input({ type, name, placeholder, value, onChange, tooltip, error, isLoading }) {
 
-export default function Input({ text, name, placeholder, value, onChange, tooltip, error }) {
+  const [originalTtype, setOriginalType] = useState(type);
 
+
+  function setPasswordType(event) {
+    event.preventDefault();
+    setOriginalType(value => originalTtype === 'text' ? 'password' : 'text');
+
+  }
   function hasError() {
     return !IsEmptyObject(error) && error[name].length > 0
   }
-
 
   function errorClass() {
     if (hasError())
@@ -18,18 +24,29 @@ export default function Input({ text, name, placeholder, value, onChange, toolti
   }
   return (
     <div className="my-3">
-      <div className="form-control w-full max-w-xs tooltip tooltip-bottom" data-tip={tooltip}>
+      <div className="form-control w-full max-w-xs tooltip tooltip-bottom " data-tip={tooltip}>
         <label className="label">
           <span className="label-text">{placeholder}</span>
         </label>
-        <input
-          type={text}
-          name={name}
-          placeholder={placeholder}
-          value={value[name] || ''}
-          onChange={onChange}
-          className={errorClass()}
-        />
+
+        <div className="relative w-full flex justify-end content-center">
+          <input
+            type={originalTtype}
+            name={name}
+            placeholder={placeholder}
+            value={value[name] || ''}
+            onChange={onChange}
+            className={errorClass()}
+          />
+          {isLoading && <progress className="progress progress-primary w-full h-1 absolute"></progress>}
+          {
+            type === 'password' && (
+              <div className="absolute top-4 right-3 cursor-pointer" onClick={setPasswordType}>
+                {originalTtype === 'text' ? <IoMdEye size={18} /> : <IoMdEyeOff size={18} />}
+              </div>
+            )
+          }
+        </div>
         {
           hasError() &&
           <label className="mb-5">
