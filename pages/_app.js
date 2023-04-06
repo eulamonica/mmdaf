@@ -12,10 +12,4 @@ export default function App({ Component, pageProps }) {
       <ToastContainer />
     </>
   )
-  // return getLayout(
-  //   <>
-  //     <Component {...pageProps} />
-  //     <ToastContainer />
-  //   </>
-  // )
 }

@@ -1,13 +1,26 @@
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router'
 import Layout from '@/components/Layout';
 import mmdaCoverRegister from '@/assets/mmda-register-cover.webp'
 import Image from 'next/image'
 import useForm from '@/hooks/useForm'
 import Input from '@/components/Input';
+import Modal from '@/components/Modal';
+import useModal from '@/hooks/useModal';
+import useCountdown from '@/hooks/useCountdown';
 import { toast } from 'react-toastify';
+import PopUp from "@/components/PopUp";
 
+// register email
+// verify token
+
+// Resend Email Page - email or username 
+// Resend Email Page
 
 export default function Register() {
+
+  const router = useRouter()
+  const [timer, resetTimer] = useCountdown(15);
 
   function onSubmit(values) {
     console.log(values)
@@ -15,12 +28,14 @@ export default function Register() {
 
   function onSuccess(data) {
     console.log(data);
+    toggleModal();
   }
 
-  function onErrorCallback(errors) {
+  function onError(errors) {
     console.log(errors)
   }
-  function onFinishedCallback(values) {
+
+  function onFinish(values) {
     console.log(values)
   }
 
@@ -35,11 +50,74 @@ export default function Register() {
   },
     onSubmit,
     onSuccess,
-    onErrorCallback,
-    onFinishedCallback)
+    onError,
+    onFinish)
+
+
+
+  function onCloseModal() {
+    console.log('Close')
+  }
+  function onOpenModal() {
+    console.log('Open')
+  }
+
+  async function onAcceptModal() {
+    resetTimer()
+    await fetch('/api/auth/resend-email-verification', {
+      headers: { "Content-Type": "application/json" },
+      method: 'post',
+      body: JSON.stringify({ email: userData.email }),
+    }).then(async (response) => {
+      const data = await response.json();
+      if (data.toast) {
+        data.toast.forEach(async (message) => {
+          toast(<PopUp message={message.message} type={message.type} />, {
+            autoClose: 2000,
+            position: toast.POSITION.TOP_RIGHT,
+            progress: undefined,
+            hideProgressBar: true,
+            closeButton: false,
+          });
+        })
+      }
+    })
+  }
+
+
+  function onCancelModal() {
+    router.push('/views/public/auth/login')
+  }
+
+  const [cancelModal, acceptModal, toggleModal, isOpenUserModal] = useModal(onCloseModal, onOpenModal, onAcceptModal, onCancelModal, true);
 
   return (
     <div className='w-full my-10 flex justify-center'>
+      <Modal
+        title='Email verification sent'
+        subtitle='Visit your email to confirm your account!'
+        cancelText='LOGIN'
+        okText='RESEND EMAIL'
+        accept={acceptModal}
+        cancel={cancelModal}
+        toggle={toggleModal}
+        opened={isOpenUserModal}
+        isLoading={timer}
+      >
+        <div className='my-5'>
+          Thank you for signing up <strong>{userData.email}</strong>!
+          <br />
+          Email verification sent. Please check your inbox (and spam folder) for a verification email
+          <br />
+          {timer > 0 && (
+            <p className='text-accent'>
+              Resend email : <strong>{timer}</strong>
+            </p>
+          )}
+        </div>
+
+      </Modal>
+
       <div className='card w-full md:w-96 sm:w-80 bg-base-200 shadow-xl'>
         <figure className='hover:opacity-10'>
           <Image
@@ -48,13 +126,14 @@ export default function Register() {
             className='h-full'
             priority
           /></figure>
+
         <div className='card-body'>
           <h2 className='card-title'>Register</h2>
 
           <p>{'Ready to make a positive change in Metro Manila? Register now with MMDA and be part of the solution!'}</p>
 
-          <div className=' justify-end w-full'>
-            {isUserLoading && <progress className="progress progress-primary w-full"></progress>}
+          <div className='justify-end w-full'>
+            {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
             <form onSubmit={userSubmit}>
 
               <Input
@@ -98,7 +177,7 @@ export default function Register() {
                 onChange={userHandleChange}
                 error={userError}
                 isLoading={isUserLoading}
-                tooltip="Email must be valid"
+                tooltip='Email must be valid'
               />
 
               <Input
@@ -109,7 +188,7 @@ export default function Register() {
                 onChange={userHandleChange}
                 error={userError}
                 isLoading={isUserLoading}
-                tooltip="Make sure your password is strong"
+                tooltip='Make sure your password is strong'
               />
 
               <Input
@@ -120,7 +199,7 @@ export default function Register() {
                 onChange={userHandleChange}
                 error={userError}
                 isLoading={isUserLoading}
-                tooltip="Must matched the password field"
+                tooltip='Must matched the password field'
               />
 
               <Input
@@ -131,11 +210,12 @@ export default function Register() {
                 onChange={userHandleChange}
                 error={userError}
                 isLoading={isUserLoading}
-                tooltip="This is only for valid users. Email us if you want to know more..."
+                tooltip='This is only for valid users. Email us if you want to know more...'
               />
 
               <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
-              {isUserLoading && <progress className="progress progress-primary w-full"></progress>}
+              {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
+
             </form>
           </div>
         </div>

@@ -4,15 +4,16 @@ import { hash } from "bcryptjs"
 import { dbConnection } from "@/lib/mongodb"
 import { getCurrentDate } from '@/helpers/index'
 import User from "@/models/user"
-import sendEmail from "@/lib/sendEmail"
+import sendEmail from "@/lib/sendEmail";
 
 const handler = async (req, res) => {
+
   await dbConnection().catch(err => res.json(err))
 
   if (req.method !== "POST")
     return res.status(405).json({
       success: false,
-      error: [{ message: 'Bad Request', value: 'toast' }]
+      toast: [{ message: 'Bad Request', type: 'error' }]
     })
 
   const {
@@ -37,9 +38,6 @@ const handler = async (req, res) => {
 
   const usernameExists = await User.findOne({ username })
   const emailExists = await User.findOne({ email })
-
-  const { host } = req.headers;
-  const protocol = req.connection.encrypted ? 'https' : 'http';
 
   // Username validation
   if (usernameExists) {
@@ -119,7 +117,6 @@ const handler = async (req, res) => {
   const hasErrors = Object.values(error).some(field => field.length > 0);
 
 
-
   if (hasErrors) {
     return res.status(400).json({
       success: false,
@@ -131,12 +128,13 @@ const handler = async (req, res) => {
   }
 
 
+  const { host } = req.headers;
+  const protocol = req.connection.encrypted ? 'https' : 'http';
   const hashedPassword = await hash(password, 12)
   const hashedUUID = await hash(v4(), 13)
   const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}`;
 
-
-  const sample = {
+  const data = {
     datetime: getCurrentDate(),
     title_header: "MMDAF Email Verification",
     official_site_link: "https://mmda.gov.ph",
@@ -153,7 +151,7 @@ const handler = async (req, res) => {
   }
 
 
-  const sendEmailConfirmation = await sendEmail({ to: email, subject: "Email verification", data: sample });
+  const sendEmailConfirmation = await sendEmail({ to: email, subject: "Email verification", data });
   if (sendEmailConfirmation.success === false) {
     return res.status(400).json({
       success: false,
@@ -164,17 +162,17 @@ const handler = async (req, res) => {
     });
   }
 
-  // const userForm = new User({
-  //   username: username,
-  //   firstName: firstName,
-  //   lastName: lastName,
-  //   email: email,
-  //   password: hashedPassword,
-  //   emailToken: hashedUUID,
-  //   isEmailVerified: false,
-  // });
+  const userForm = new User({
+    username: username,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: hashedPassword,
+    emailToken: hashedUUID,
+    isEmailVerified: false,
+  });
 
-  // userForm.save();
+  await userForm.save();
   return res.status(200).json({
     success: true,
     toast: [{ message: 'Successfully Created an Account', type: 'success' }]
