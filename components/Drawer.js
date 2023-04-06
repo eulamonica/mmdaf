@@ -77,6 +77,7 @@ export default function Drawer({ children }) {
                 alt="Landscape picture"
                 width={800}
                 height={500}
+                priority
               /></figure>
             <label htmlFor="navigation-component" className="absolute right-0 shadow-lg btn btn-circle  btn-sm font-extralight text-xs m-3 font-sans lg:hidden">
               x

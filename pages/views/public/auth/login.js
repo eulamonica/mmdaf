@@ -33,6 +33,7 @@ export default function Login() {
             src={mmdaCoverlogin}
             alt="MMDA Cover login"
             className="h-full"
+            priority
           /></figure>
         <div className="card-body">
           <h2 className="card-title">Login</h2>

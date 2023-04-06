@@ -6,8 +6,13 @@ import { v4 } from "uuid";
 
 const handler = async (req, res) => {
 
-  const { email } = req.body;
+  if (req.method !== "POST")
+    return res.status(405).json({
+      success: false,
+      toast: [{ message: 'Bad Request', type: 'error' }]
+    })
 
+  const { email } = req.body;
   const { host } = req.headers;
   const protocol = req.connection.encrypted ? 'https' : 'http';
   const hashedUUID = await hash(v4(), 13)

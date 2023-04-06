@@ -11,7 +11,6 @@ import useCountdown from '@/hooks/useCountdown';
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
 
-// register email
 // verify token
 
 // Resend Email Page - email or username 
@@ -89,7 +88,7 @@ export default function Register() {
     router.push('/views/public/auth/login')
   }
 
-  const [cancelModal, acceptModal, toggleModal, isOpenUserModal] = useModal(onCloseModal, onOpenModal, onAcceptModal, onCancelModal, true);
+  const [cancelModal, acceptModal, toggleModal, isOpenUserModal] = useModal(onCloseModal, onOpenModal, onAcceptModal, onCancelModal, false);
 
   return (
     <div className='w-full my-10 flex justify-center'>
