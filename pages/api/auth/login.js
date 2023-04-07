@@ -1,6 +1,8 @@
 import { compare } from "bcryptjs"
 import { isUsername, isEmail } from "@/helpers";
+import { generateToken } from "@/lib/auth";
 import User from "@/models/user";
+import { dbConnection } from "@/lib/mongodb"
 
 const handler = async (req, res) => {
 
@@ -9,7 +11,7 @@ const handler = async (req, res) => {
       success: false,
       toast: [{ message: 'Bad Request', type: 'error' }]
     })
-
+  await dbConnection().catch(err => res.json(err))
   const {
     userInput,
     password,
@@ -71,8 +73,15 @@ const handler = async (req, res) => {
       ]
     });
   }
+  const tokenPayload = {
+    id: user.id,
+    email: user.email,
+    username: user.username,
+    isEmailVerified: user.isEmailVerified,
+  };
 
-
+  const token = generateToken(tokenPayload);
+  res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=${24 * 60 * 60}`);
   return res.status(200).json({
     success: true,
     toast: [{ message: 'Logged in successfuly', type: 'success' }]

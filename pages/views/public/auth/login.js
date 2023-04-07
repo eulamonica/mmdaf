@@ -6,11 +6,11 @@ import Image from 'next/image'
 import useForm from '@/hooks/useForm'
 import Input from '@/components/Input';
 import Link from 'next/link'
-
+import withAuth from '@/middlewares/auth';
 export default function Login() {
   const router = useRouter()
   function onSubmit(values) {
-    console.log(values)
+    router.push('/views/public/dashboard')
   }
 
   const [userData, userError, isUserLoading, userHandleChange, userSubmit] = useForm('/api/auth/login', 'POST', {
@@ -85,3 +85,11 @@ export default function Login() {
 Login.getLayout = function getLayout(page) {
   return <Layout> {page}</Layout>
 }
+
+// export async function getServerSideProps(context) {
+//   return withAuth(async () => {
+//     return {
+//       props: {},
+//     };
+//   })(context.req, context.res);
+// }

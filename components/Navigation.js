@@ -1,14 +1,37 @@
 import { useRouter } from "next/router"
 import { GiHamburgerMenu } from 'react-icons/gi'
-import Link from 'next/link'
+import PopUp from "./PopUp"
 import React from "react"
-
+import { toast } from "react-toastify"
 export default function Navigation({ children }) {
 
   const router = useRouter()
 
   const handleChangeRoute = (href) => {
     router.push(href)
+  }
+  async function handleLogout(e) {
+    e.preventDefault();
+    await fetch('/api/auth/logout', {
+      headers: { "Content-Type": "application/json" },
+      method: 'post',
+    }).then(async (response) => {
+      const data = await response.json();
+      if (data.success) {
+        handleChangeRoute('/views/public/dashboard')
+      }
+      if (data.toast) {
+        data.toast.forEach(async (message) => {
+          toast(<PopUp message={message.message} type={message.type} />, {
+            autoClose: 2000,
+            position: toast.POSITION.TOP_RIGHT,
+            progress: undefined,
+            hideProgressBar: true,
+            closeButton: false,
+          });
+        })
+      }
+    })
   }
 
   return (
@@ -35,10 +58,8 @@ export default function Navigation({ children }) {
           </>
 
           <>
-            <Link className="btn btn-square btn-ghost" href="/api/auth/logout">Logout</Link>
+            <button className="btn btn-square btn-ghost" onClick={handleLogout}>Logout</button>
           </>
-
-
 
         </div>
       </div >
