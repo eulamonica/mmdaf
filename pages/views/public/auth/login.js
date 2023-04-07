@@ -6,18 +6,43 @@ import Image from 'next/image'
 import useForm from '@/hooks/useForm'
 import Input from '@/components/Input';
 import Link from 'next/link'
-import withAuth from '@/middlewares/auth';
-export default function Login() {
+import withAuth from "@/middlewares/auth";
+
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, true
+  )(context.req, context.res);
+}
+
+export default function Login({ user }) {
   const router = useRouter()
+
   function onSubmit(values) {
+  }
+
+  function onSuccess(data) {
     router.push('/views/public/dashboard')
+  }
+
+  function onError(errors) {
+  }
+
+  function onFinish(values) {
   }
 
   const [userData, userError, isUserLoading, userHandleChange, userSubmit] = useForm('/api/auth/login', 'POST', {
     userInput: "",
     password: "",
     secretPassword: ""
-  }, onSubmit)
+  }, onSubmit,
+    onSuccess,
+    onError,
+    onFinish)
 
   return (
     <div className='w-full my-10 flex justify-center'>
@@ -83,13 +108,5 @@ export default function Login() {
 }
 
 Login.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
 }
-
-// export async function getServerSideProps(context) {
-//   return withAuth(async () => {
-//     return {
-//       props: {},
-//     };
-//   })(context.req, context.res);
-// }

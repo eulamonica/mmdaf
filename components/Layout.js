@@ -4,18 +4,17 @@ import Loading from "./Loading";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 
-export default function Layout({ children }) {
+export default function Layout({ children, user }) {
   return (
     <>
       <Suspense fallback={<Loading />}>
-        <Drawer>
-          <Navigation>
+        <Drawer user={user}>
+          <Navigation user={user}>
             <main>  {children} </main>
-            <Footer />
+            <Footer user={user} />
           </Navigation>
         </Drawer>
       </Suspense>
-
     </>
   )
 }

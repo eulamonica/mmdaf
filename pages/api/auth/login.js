@@ -79,7 +79,6 @@ const handler = async (req, res) => {
     username: user.username,
     isEmailVerified: user.isEmailVerified,
   };
-
   const token = generateToken(tokenPayload);
   res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=${24 * 60 * 60}`);
   return res.status(200).json({

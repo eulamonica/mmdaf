@@ -1,4 +1,5 @@
 import { verifyToken } from "@/lib/auth";
+
 /*
 - if logged in
 + allowed-login: Show me dashboard, and any private pages
@@ -10,7 +11,7 @@ import { verifyToken } from "@/lib/auth";
 + private-pages: redirect me to dashboard when i go to private
 */
 
-async function checkAuth() {
+function checkAuth(req) {
 
   const token = req.cookies.token;
   if (!token) return { isLoggedIn: false };
@@ -18,34 +19,35 @@ async function checkAuth() {
   const decodedToken = verifyToken(token);
   if (!decodedToken) return { isLoggedIn: false };
 
-  return { isLoggedIn: true, isEmailVerified: token.isEmailVerified, user: token }
+  return { isLoggedIn: true, isEmailVerified: decodedToken.isEmailVerified, user: decodedToken }
 }
 
-const withAuth = async (handler, allowed = false, privatePage = false) => async (req) => {
-  const authResult = await checkAuth(req);
+const withAuth = (handler, allowed = false, publicPage = true) => async (req, res) => {
+  const authResult = checkAuth(req);
 
   const isLoggedIn = authResult.isLoggedIn
 
   // if not logged in and going to public pages
-  if (!isLoggedIn && privatePage === false)
+  if (!isLoggedIn && publicPage && allowed == true)
     return handler({ user: authResult.user });
 
 
   // if not logged in and going to private pages
-  if (!isLoggedIn && privatePage === true) {
+  if (!isLoggedIn && !publicPage) {
     return {
       redirect: {
-        destination: '/views/public/dashboard/',
+        destination: '/views/public/dashboard',
         permanent: false,
       }
     }
   }
 
   // if logged in and going to private page and email not verified 
-  if (isLoggedIn && privatePage === true && !authResult.isEmailVerified) {
+
+  if (isLoggedIn && !publicPage && !authResult.isEmailVerified && !allowed) {
     return {
       redirect: {
-        destination: '/views/private/profile/',
+        destination: '/views/private/profile',
         permanent: false,
       }
     }
@@ -53,10 +55,10 @@ const withAuth = async (handler, allowed = false, privatePage = false) => async 
 
   // if logged in and the page is public and not allowed
   // auth pages like login and register
-  if (isLoggedIn && privatePage === false && allowed === false) {
+  if (isLoggedIn && publicPage && !allowed) {
     return {
       redirect: {
-        destination: '/views/public/dashboard/',
+        destination: '/views/public/dashboard',
         permanent: false,
       }
     }
@@ -64,49 +66,13 @@ const withAuth = async (handler, allowed = false, privatePage = false) => async 
 
   // if logged in and the page is public and allowed which means not affected if it's logged in or not
   // Dashboard
-  if (isLoggedIn && privatePage === false && allowed)
+  if (isLoggedIn && publicPage && allowed)
     return handler({ user: authResult.user });
-
-
-  // if logged in and private page 
-  if (isLoggedIn && privatePage) {
-    return {
-      redirect: {
-        destination: '/views/public/dashboard/',
-        permanent: false,
-      }
-    }
-  }
 
   return handler({ user: authResult.user });
 
 }
 
-//
+export default withAuth;
 
-// const withAuth = (handler, redirectIfNotAuth = true, redirectTo = null) => async (req) => {
-//   const authResult = checkAuth(req);
-
-//   if (!authResult.isAuth && redirectIfNotAuth) {
-//     return {
-//       redirect: {
-//         destination: '/views/public/dashboard/',
-//         permanent: false,
-//       },
-//     };
-//   }
-//   if (authResult.isAuth && redirectTo) {
-//     return {
-//       redirect: {
-//         destination: redirectTo,
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return handler({ user: authResult.user });
-// }
-
-// export default withAuth;
-// export { checkAuth };
 

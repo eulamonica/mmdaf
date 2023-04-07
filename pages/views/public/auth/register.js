@@ -11,8 +11,20 @@ import useCountdown from '@/hooks/useCountdown';
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
 import Link from 'next/link'
+import withAuth from "@/middlewares/auth";
 
-export default function Register() {
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, true
+  )(context.req, context.res);
+}
+
+export default function Register({ user }) {
 
   const router = useRouter()
   const [timer, resetTimer] = useCountdown(15);
@@ -219,5 +231,6 @@ export default function Register() {
 }
 
 Register.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
+
 }

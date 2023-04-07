@@ -7,8 +7,20 @@ import Link from "next/link";
 import mmdaCoverRegister from '@/assets/mmda-register-cover.webp'
 import { useState } from "react";
 import { useRouter } from 'next/router'
+import withAuth from "@/middlewares/auth";
 
-export default function ChangePassword() {
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, true
+  )(context.req, context.res);
+}
+
+export default function ChangePassword({ user }) {
 
   const router = useRouter()
   const [changedSuccessfully, setChangedSuccessfully] = useState(false)
@@ -139,5 +151,6 @@ export default function ChangePassword() {
 }
 
 ChangePassword.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
+
 }

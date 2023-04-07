@@ -4,8 +4,21 @@ import { useEffect } from "react";
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
+import withAuth from "@/middlewares/auth";
 
-export default function EmailVerification() {
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, true
+  )(context.req, context.res);
+}
+
+
+export default function EmailVerification({ user }) {
   const router = useRouter()
 
   async function emailVerification(email_token, email) {
@@ -63,5 +76,5 @@ export default function EmailVerification() {
 }
 
 EmailVerification.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
 }

@@ -12,13 +12,12 @@ export async function getServerSideProps(context) {
     false, false
   )(context.req, context.res);
 }
-export default function Hourly({ user }) {
+export default function Profile({ user }) {
   return (
-    <h1> Hourly </h1>
+    <h1> Profile </h1>
   )
 }
 
-Hourly.getLayout = function getLayout(page) {
+Profile.getLayout = function getLayout(page) {
   return <Layout user={page.props.user}> {page}</Layout>
-
 }

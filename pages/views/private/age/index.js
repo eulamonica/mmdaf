@@ -1,8 +1,19 @@
 import React from "react";
 import Layout from "@/components/Layout";
-import { useUser } from "@auth0/nextjs-auth0/client";
-export default function Age() {
-  const { user, error, isLoading } = useUser();
+import withAuth from "@/middlewares/auth";
+
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, false
+  )(context.req, context.res);
+}
+
+export default function Age({ user }) {
 
   return (
     <h1> Age </h1>
@@ -10,5 +21,5 @@ export default function Age() {
 }
 
 Age.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
 }

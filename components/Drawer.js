@@ -51,7 +51,8 @@ const drawerRouter = [
     route: '/views/private/profile.js'
   },
 ]
-export default function Drawer({ children }) {
+export default function Drawer({ children, user }) {
+  console.log(user)
   const router = useRouter()
   const handleChangeRoute = (href) => {
     router.push(href)

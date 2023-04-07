@@ -7,8 +7,21 @@ import useForm from '@/hooks/useForm'
 import Input from '@/components/Input';
 import useCountdown from '@/hooks/useCountdown';
 import Link from 'next/link'
+import withAuth from "@/middlewares/auth";
 
-export default function ForgotPassword() {
+export async function getServerSideProps(context) {
+  return withAuth(
+    async ({ user }) => {
+      return {
+        props: { user: user || null },
+      };
+    },
+    false, true
+  )(context.req, context.res);
+}
+
+
+export default function ForgotPassword({ user }) {
 
   const router = useRouter()
   const [timer, resetTimer] = useCountdown(15);
@@ -84,5 +97,6 @@ export default function ForgotPassword() {
 }
 
 ForgotPassword.getLayout = function getLayout(page) {
-  return <Layout> {page}</Layout>
+  return <Layout user={page.props.user}> {page}</Layout>
+
 }
