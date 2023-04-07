@@ -1,12 +1,9 @@
 import React from "react";
 import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
-
-
-
 
 export default function EmailVerification() {
   const router = useRouter()

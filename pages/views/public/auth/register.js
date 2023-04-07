@@ -12,15 +12,6 @@ import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
 import Link from 'next/link'
 
-
-
-// forgot password - request change password email verification 
-// change password then redirect to login and remove request token
-// Middleware on logged in and logged out
-// UI Fix for logged in and logged out 
-// Resend Email verification if not verified on the logged in page (middleware) 
-
-
 export default function Register() {
 
   const router = useRouter()

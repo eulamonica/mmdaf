@@ -1,15 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router'
 import Layout from '@/components/Layout';
 import mmdaCoverRegister from '@/assets/mmda-register-cover.webp'
 import Image from 'next/image'
 import useForm from '@/hooks/useForm'
 import Input from '@/components/Input';
-import Modal from '@/components/Modal';
-import useModal from '@/hooks/useModal';
 import useCountdown from '@/hooks/useCountdown';
-import { toast } from 'react-toastify';
-import PopUp from "@/components/PopUp";
 import Link from 'next/link'
 
 export default function ForgotPassword() {

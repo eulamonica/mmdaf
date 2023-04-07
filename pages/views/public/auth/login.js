@@ -1,67 +1,79 @@
-import { useState } from "react";
+import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router'
+import Layout from '@/components/Layout';
+import mmdaLoginCover from '@/assets/mmda-login-cover.jpg'
 import Image from 'next/image'
-import Router from "next/router";
-import React from "react";
-import Layout from "@/components/Layout";
-import mmdaCoverlogin from '@/assets/mmda-login-cover.jpg'
+import useForm from '@/hooks/useForm'
+import Input from '@/components/Input';
+import Link from 'next/link'
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter()
+  function onSubmit(values) {
+    console.log(values)
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    if (response.ok) {
-      Router.push("/");
-    } else {
-      alert("Login failed");
-    }
-  };
+  const [userData, userError, isUserLoading, userHandleChange, userSubmit] = useForm('/api/auth/login', 'POST', {
+    userInput: "",
+    password: "",
+    secretPassword: ""
+  }, onSubmit)
 
   return (
-    <div className="w-full my-10 flex justify-center">
-      <div className="card w-96 bg-base-200 shadow-xl">
-        <figure className="hover:opacity-10">
+    <div className='w-full my-10 flex justify-center'>
+      <div className='card w-full md:w-96 sm:w-80 bg-base-200 shadow-xl'>
+        <figure className='hover:opacity-10'>
           <Image
-            src={mmdaCoverlogin}
-            alt="MMDA Cover login"
-            className="h-full"
+            src={mmdaLoginCover}
+            alt='MMDA Cover login'
+            className='h-full'
             priority
           /></figure>
-        <div className="card-body">
-          <h2 className="card-title">Login</h2>
+        <div className='card-body'>
+          <h2 className='card-title'>Login</h2>
           <p>{"Join the MMDA movement towards a better Metro Manila – log in now!"}</p>
-          <div className="card-actions justify-end">
-            <form onSubmit={handleSubmit}>
-              <div className="form-control">
-                <label className="input-group my-3 mt-10">
-                  <span>Email</span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="info@site.com"
-                    className="input input-bordered w-full"
-                    required
-                  />
-                </label>
-              </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="input input-bordered w-full my-3"
-                required
+
+          <div className='justify-end w-full'>
+            {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
+            <form onSubmit={userSubmit}>
+              <Input
+                type='text'
+                name='userInput'
+                placeholder='Email or Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                isLoading={isUserLoading}
+                tooltip="example: jhondoe@mail.com"
               />
-              <button type="submit" className="btn btn-primary mt-10 w-full">Login</button>
+              <Input
+                type='password'
+                name='password'
+                placeholder='Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                isLoading={isUserLoading}
+                tooltip='Must matched the password field'
+              />
+
+              <Input
+                type='password'
+                name='secretPassword'
+                placeholder='Secret Password'
+                value={userData}
+                onChange={userHandleChange}
+                error={userError}
+                isLoading={isUserLoading}
+                tooltip='This is only for valid users. Email us if you want to know more...'
+              />
+              <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
+              {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
+              <div className='my-10'>
+                <Link href='/views/public/auth/login' className="link link-primary">Doesnt have account? Register now</Link>
+                <br />
+                <Link href='/views/public/auth/forgot-password' className="link link-primary"> Forgot password? </Link>
+              </div>
             </form>
           </div>
         </div>

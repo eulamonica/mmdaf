@@ -1,11 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import { v4 } from "uuid";
-import { hash } from "bcryptjs"
 import { dbConnection } from "@/lib/mongodb"
-import { getCurrentDate } from '@/helpers/index'
 import User from "@/models/user"
 import { compare } from "bcryptjs";
-import sendEmail from "@/lib/sendEmail";
+
 
 const handler = async (req, res) => {
 
@@ -27,8 +24,8 @@ const handler = async (req, res) => {
       toast: [{ message: 'Token does not exists', type: 'error' }]
     })
   }
-
-  user.emailToken = "n/a";
+  const uuid = v4();
+  user.emailToken = uuid;
   user.isEmailVerified = true;
   await user.save();
 
