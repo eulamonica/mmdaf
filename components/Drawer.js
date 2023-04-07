@@ -8,13 +8,13 @@ import { useRouter } from 'next/router'
 const drawerRouter = [
   {
     text_category: 'MMDA Forecasting',
-    isEmailVerified: true
+    isEmailVerified: false
   },
   {
     text: "Dashboard",
     icon: <MdDashboard />,
     route: '/views/public/dashboard',
-    isEmailVerified: true
+    isEmailVerified: false
 
   },
   {
@@ -65,6 +65,7 @@ const drawerRouter = [
 function SideDrawer({ user }) {
   const router = useRouter()
   const handleChangeRoute = (href) => {
+    console.log(href)
     router.push(href)
   }
   function isActive(href) {

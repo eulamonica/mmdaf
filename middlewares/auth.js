@@ -36,7 +36,7 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 
 
   // if not logged in and going to private pages
-  if (!isLoggedIn && !publicPage && !req.url.startsWith(dahsboardDestination)) {
+  if (!isLoggedIn && !publicPage && !req.url.includes(dahsboardDestination)) {
     return {
       redirect: {
         destination: dahsboardDestination,
@@ -45,8 +45,8 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
     }
   }
 
-  // if logged in and going to private page and email not verified 
-  if (isLoggedIn && !publicPage && !authResult.isEmailVerified && !allowed && !req.url.startsWith(profileDestinaion)) {
+  // if logged in and going to private page and email not verified
+  if (isLoggedIn && !publicPage && !authResult.isEmailVerified && !allowed && !req.url.includes(profileDestinaion)) {
     return {
       redirect: {
         destination: profileDestinaion,
@@ -57,7 +57,7 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 
   // if logged in and the page is public and not allowed
   // auth pages like login and register
-  if (isLoggedIn && publicPage && !allowed && !req.url.startsWith(dahsboardDestination)) {
+  if (isLoggedIn && publicPage && !allowed && !req.url.includes(dahsboardDestination)) {
     return {
       redirect: {
         destination: dahsboardDestination,
