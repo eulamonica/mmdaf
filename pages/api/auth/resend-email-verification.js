@@ -28,7 +28,8 @@ const handler = async (req, res) => {
 
   const { host } = req.headers;
   const protocol = req.connection.encrypted ? 'https' : 'http';
-  const hashedUUID = await hash(v4(), 13)
+  const uuid = v4();
+  const hashedUUID = await hash(uuid, 13)
   const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}&email=${email}`;
 
   const data = {
@@ -59,7 +60,7 @@ const handler = async (req, res) => {
 
 
 
-  userEmail.emailToken = hashedUUID;
+  userEmail.emailToken = uuid;
   userEmail.isEmailVerified = false;
   await userEmail.save();
 

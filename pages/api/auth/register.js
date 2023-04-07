@@ -130,7 +130,8 @@ const handler = async (req, res) => {
   const { host } = req.headers;
   const protocol = req.connection.encrypted ? 'https' : 'http';
   const hashedPassword = await hash(password, 12)
-  const hashedUUID = await hash(v4(), 13)
+  const uuid = v4();
+  const hashedUUID = await hash(uuid, 13)
   const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}&email=${email}`;
 
   const data = {
@@ -167,9 +168,9 @@ const handler = async (req, res) => {
     lastName: lastName,
     email: email,
     password: hashedPassword,
-    emailToken: hashedUUID,
+    emailToken: uuid,
+    changePasswordToken: uuid,
     isEmailVerified: false,
-    changePasswordToken: hashedUUID,
   });
 
   await userForm.save();

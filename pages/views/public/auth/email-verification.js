@@ -11,11 +11,11 @@ import PopUp from "@/components/PopUp";
 export default function EmailVerification() {
   const router = useRouter()
 
-  async function emailVerification(email_token) {
+  async function emailVerification(email_token, email) {
     await fetch('/api/auth/verify-email', {
       headers: { "Content-Type": "application/json" },
       method: 'post',
-      body: JSON.stringify({ email_token }),
+      body: JSON.stringify({ email_token, email }),
     }).then(async (response) => {
       const data = await response.json();
       if (data.toast) {
@@ -37,8 +37,9 @@ export default function EmailVerification() {
   }
   useEffect(() => {
     const email_token = router.query['email-token']
-    if (email_token)
-      emailVerification(email_token);
+    const email = router.query['email']
+    if (email_token && email)
+      emailVerification(email_token, email);
   }, [router.query])
 
   return (
