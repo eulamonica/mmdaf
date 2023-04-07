@@ -43,18 +43,20 @@ export default function EmailVerification() {
 
   return (
     <>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content flex-col lg:flex-row-reverse w-96">
+      <div className="hero min-h-screen bg-base-400">
+        <div className="hero-content flex-col lg:flex-row-reverse w-96 mb-28 bg-base-300 p-10 rounded-lg shadow-xl">
           <div>
-            <h1 className="text-5xl font-bold">Email Verified!</h1>
-            <p className="py-6">P
-              Congratulations! We are excited to welcome you.
+            <h1 className="text-5xl font-bold text-center">Email Verified!</h1>
+            <div className="py-6 text-center">
+              <h4 className="text-primary font-bold">  Congratulations! We are excited to welcome you.</h4>
               <br />
-              We are pleased to inform you that your request to access the MMDA form has been approved.
-              You now have the ability to edit, download, and contribute to the form,
-              which will help enhance our community s understanding of the MMDA s initiatives and programs
-            </p>
-            <button className="btn btn-primary" onClick={getStartedHander}>Click here to get started</button>
+              <p>
+                We are pleased to inform you that your request to access the MMDA form has been approved.
+                You now have the ability to edit, download, and contribute to the form,
+                which will help enhance our community s understanding of the MMDA s initiatives and programs
+              </p>
+            </div>
+            <button className="btn btn-primary w-full" onClick={getStartedHander}>Click here to get started</button>
           </div>
         </div>
       </div>

@@ -13,10 +13,23 @@ const handler = async (req, res) => {
     })
 
   const { email } = req.body;
+
+
+  const userEmail = await User.findOne({ email });
+  if (!userEmail) {
+    return res.status(401).json({
+      success: false,
+      toast: [
+        { message: 'Email does not exists', type: 'error' }
+      ]
+    })
+  }
+
+
   const { host } = req.headers;
   const protocol = req.connection.encrypted ? 'https' : 'http';
   const hashedUUID = await hash(v4(), 13)
-  const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}`;
+  const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}&email=${email}`;
 
   const data = {
     datetime: getCurrentDate(),
@@ -33,27 +46,18 @@ const handler = async (req, res) => {
     button_description_link: "https://mmdaf.vercel.app/",
     button_description: "Visit Official Site"
   }
+
   const sendEmailConfirmation = await sendEmail({ to: email, subject: "Email verification", data });
   if (sendEmailConfirmation.success === false) {
     return res.status(400).json({
       success: false,
-      errors: error,
       toast: [
         { message: 'Something wrong resending email', type: 'error' }
       ]
     });
   }
 
-  const userEmail = await User.findOne({ email });
-  if (!userEmail) {
-    return res.status(401).json({
-      success: false,
-      errors: error,
-      toast: [
-        { message: 'Email does not exists', type: 'error' }
-      ]
-    })
-  }
+
 
   userEmail.emailToken = hashedUUID;
   userEmail.isEmailVerified = false;

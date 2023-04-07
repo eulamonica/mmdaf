@@ -47,6 +47,10 @@ const UserSchema = new Schema({
   isEmailVerified: {
     type: Boolean,
     default: false,
+  },
+  changePasswordToken: {
+    required: true,
+    type: String,
   }
 });
 

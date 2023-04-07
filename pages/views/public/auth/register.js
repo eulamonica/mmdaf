@@ -10,13 +10,16 @@ import useModal from '@/hooks/useModal';
 import useCountdown from '@/hooks/useCountdown';
 import { toast } from 'react-toastify';
 import PopUp from "@/components/PopUp";
+import Link from 'next/link'
 
 
-// Resend Email Page - email or username 
-// Resend Email Page
+
 // forgot password - request change password email verification 
-// change password then redirect to login
-// middle
+// change password then redirect to login and remove request token
+// Middleware on logged in and logged out
+// UI Fix for logged in and logged out 
+// Resend Email verification if not verified on the logged in page (middleware) 
+
 
 export default function Register() {
 
@@ -24,20 +27,16 @@ export default function Register() {
   const [timer, resetTimer] = useCountdown(15);
 
   function onSubmit(values) {
-    console.log(values)
   }
 
   function onSuccess(data) {
-    console.log(data);
-    toggleModal();
+    toggleModal()
   }
 
   function onError(errors) {
-    console.log(errors)
   }
 
   function onFinish(values) {
-    console.log(values)
   }
 
   const [userData, userError, isUserLoading, userHandleChange, userSubmit] = useForm('/api/auth/register', 'POST', {
@@ -57,10 +56,8 @@ export default function Register() {
 
 
   function onCloseModal() {
-    console.log('Close')
   }
   function onOpenModal() {
-    console.log('Open')
   }
 
   async function onAcceptModal() {
@@ -216,7 +213,11 @@ export default function Register() {
 
               <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
               {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
-
+              <div className='my-10'>
+                <Link href='/views/public/auth/login' className="link link-primary">Already have an account? Login now</Link>
+                <br />
+                <Link href='/views/public/auth/forgot-password' className="link link-primary"> Forgot password? </Link>
+              </div>
             </form>
           </div>
         </div>

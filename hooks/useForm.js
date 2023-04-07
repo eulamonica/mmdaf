@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from 'react-toastify';
+import isEqual from 'lodash/isEqual';
 import PopUp from "@/components/PopUp";
 
 
@@ -10,16 +11,35 @@ function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, 
   const onSuccessCallback = useRef();
   const onErrorCallback = useRef();
   const onFinishedCallback = useRef();
+  const prevInitialValuesRef = useRef();
 
+  function filledInitialValues(objectValue) {
+    return Object.fromEntries(
+      Object.keys(objectValue).map((key) => [key, objectValue[key] !== undefined ? objectValue[key] : ""])
+    );
+  }
 
-  const filledInitialValues = Object.fromEntries(
-    Object.keys(initialValues).map((key) => [key, initialValues[key] !== undefined ? initialValues[key] : ""])
-  );
-
-  const [formValues, setFormValues] = useState(filledInitialValues);
+  const [formValues, setFormValues] = useState(filledInitialValues(initialValues));
   const [errorValues, setErrorValues] = useState({});
-
   const [isLoading, setIsLoading] = useState(false);
+
+
+  useEffect(() => {
+    prevInitialValuesRef.current = initialValues;
+  })
+  const prevInitialValues = prevInitialValuesRef.current;
+
+  useEffect(() => {
+
+    function setInitalValuesOnChange() {
+      setFormValues(filledInitialValues(initialValues));
+    }
+
+    if (!isEqual(prevInitialValues, initialValues)) {
+      setInitalValuesOnChange();
+    }
+
+  }, [initialValues, prevInitialValues])
 
   useEffect(() => {
     if (typeof submitCallback === "function")
@@ -84,11 +104,11 @@ function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, 
       .catch(async (error) => {
         console.log(error);
       });
-    setIsLoading(false);
+
     if (onFinishedCallback.current) {
       onFinishedCallback.current(formValues)
     }
-
+    setIsLoading(false);
   };
 
   return [formValues, errorValues, isLoading, handleChange, handleSubmit];

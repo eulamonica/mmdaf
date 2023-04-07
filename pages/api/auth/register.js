@@ -131,7 +131,7 @@ const handler = async (req, res) => {
   const protocol = req.connection.encrypted ? 'https' : 'http';
   const hashedPassword = await hash(password, 12)
   const hashedUUID = await hash(v4(), 13)
-  const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}`;
+  const localhostUrl = `${protocol}://${host}/views/public/auth/email-verification?email-token=${hashedUUID}&email=${email}`;
 
   const data = {
     datetime: getCurrentDate(),
@@ -169,6 +169,7 @@ const handler = async (req, res) => {
     password: hashedPassword,
     emailToken: hashedUUID,
     isEmailVerified: false,
+    changePasswordToken: hashedUUID,
   });
 
   await userForm.save();
