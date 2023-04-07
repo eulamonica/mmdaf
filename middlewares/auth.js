@@ -27,27 +27,29 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 
   const isLoggedIn = authResult.isLoggedIn
 
+  const dahsboardDestination = '/views/public/dashboard'
+  const profileDestinaion = '/views/private/profile'
+
   // if not logged in and going to public pages
   if (!isLoggedIn && publicPage && allowed == true)
     return handler({ user: authResult.user });
 
 
   // if not logged in and going to private pages
-  if (!isLoggedIn && !publicPage) {
+  if (!isLoggedIn && !publicPage && !req.url.startsWith(dahsboardDestination)) {
     return {
       redirect: {
-        destination: '/views/public/dashboard',
+        destination: dahsboardDestination,
         permanent: false,
       }
     }
   }
 
   // if logged in and going to private page and email not verified 
-
-  if (isLoggedIn && !publicPage && !authResult.isEmailVerified && !allowed) {
+  if (isLoggedIn && !publicPage && !authResult.isEmailVerified && !allowed && !req.url.startsWith(profileDestinaion)) {
     return {
       redirect: {
-        destination: '/views/private/profile',
+        destination: profileDestinaion,
         permanent: false,
       }
     }
@@ -55,10 +57,10 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 
   // if logged in and the page is public and not allowed
   // auth pages like login and register
-  if (isLoggedIn && publicPage && !allowed) {
+  if (isLoggedIn && publicPage && !allowed && !req.url.startsWith(dahsboardDestination)) {
     return {
       redirect: {
-        destination: '/views/public/dashboard',
+        destination: dahsboardDestination,
         permanent: false,
       }
     }
