@@ -115,7 +115,6 @@ const handler = async (req, res) => {
 
   const hasErrors = Object.values(error).some(field => field.length > 0);
 
-
   if (hasErrors) {
     return res.status(400).json({
       success: false,

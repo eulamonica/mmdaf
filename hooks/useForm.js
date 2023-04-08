@@ -83,6 +83,7 @@ function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, 
           if (onSuccessCallback.current) {
             onSuccessCallback.current(data);
           }
+          setErrorValues(data.errors);
         } else {
           setErrorValues(data.errors);
           if (onErrorCallback.current) {
