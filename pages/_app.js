@@ -51,8 +51,8 @@ class MyApp extends App {
     return (
       <>
         {getLayout(<Component {...pageProps} />)}
-        {this.state.loading && <Loading />}
         <ToastContainer />
+        {this.state.loading && <Loading />}
       </>
     );
   }
