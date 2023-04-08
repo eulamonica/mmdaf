@@ -1,6 +1,8 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
+import UnderConstruction from "@/components/profile/verifiedProfile";
+
 
 export async function getServerSideProps(context) {
   return withAuth(
@@ -14,7 +16,9 @@ export async function getServerSideProps(context) {
 }
 export default function VehicleType({ user }) {
   return (
-    <h1> VehicleType </h1>
+    <>
+      <UnderConstruction pageName='Vehicle Type Page' />
+    </>
   )
 }
 

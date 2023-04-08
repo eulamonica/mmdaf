@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
 import NotVerifiedProfile from "@/components/profile/NotVerifiedProfile";
+import VerifiedProfile from "@/components/profile/verifiedProfile";
 
 export async function getServerSideProps(context) {
   return withAuth(
@@ -16,7 +17,7 @@ export async function getServerSideProps(context) {
 export default function Profile({ user }) {
   return (
     <>
-      {!user.isEmailVerified && <NotVerifiedProfile user={user} />}
+      {user.isEmailVerified ? <VerifiedProfile /> : <NotVerifiedProfile user={user} />}
     </>
   )
 }

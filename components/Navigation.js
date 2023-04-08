@@ -40,7 +40,7 @@ export default function Navigation({ children, user, themes, setTheme }) {
               }
             </ul>
           </div>
-          {!user && <UserNotExist />}
+          {!user === undefined && <UserNotExist />}
           {user && <UserExist user={user} />}
 
         </div>

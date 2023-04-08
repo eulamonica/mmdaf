@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
+import UnderConstruction from "@/components/UnderConstruction";
 
 export async function getServerSideProps(context) {
   return withAuth(
@@ -14,7 +15,9 @@ export async function getServerSideProps(context) {
 }
 export default function Hourly({ user }) {
   return (
-    <h1> Hourly </h1>
+    <div>
+      <UnderConstruction pageName='Hourly Page' />
+    </div>
   )
 }
 

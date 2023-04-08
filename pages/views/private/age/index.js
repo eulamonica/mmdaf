@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
+import UnderConstruction from "@/components/UnderConstruction";
 
 export async function getServerSideProps(context) {
   return withAuth(
@@ -16,7 +17,10 @@ export async function getServerSideProps(context) {
 export default function Age({ user }) {
 
   return (
-    <h1> Age </h1>
+    <div>
+      <UnderConstruction pageName='Age Page' />
+    </div>
+
   )
 }
 
