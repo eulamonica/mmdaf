@@ -1,11 +1,12 @@
+import { useRouter } from 'next/router';
 
-import React from "react";
+const Loading = ({ text }) => {
 
-
-export default function Loading() {
   return (
-    <div>
-      <h1>Hellooooo Loading</h1>
+    <div >
+      <progress className='fixed top-0 left-0 progress progress-primary z-50 w-full shadow-md'>Loading {text}...</progress>
     </div>
-  )
-}
+  );
+};
+
+export default Loading;
