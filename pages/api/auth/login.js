@@ -1,8 +1,8 @@
 import { compare } from "bcryptjs"
 import { isUsername, isEmail } from "@/helpers";
 import { generateToken } from "@/lib/auth";
-import User from "@/models/user";
 import { dbConnection } from "@/lib/mongodb"
+import User from "@/models/user";
 
 const handler = async (req, res) => {
 

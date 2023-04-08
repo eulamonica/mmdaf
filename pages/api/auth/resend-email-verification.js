@@ -1,8 +1,9 @@
-import User from "@/models/user"
 import sendEmail from "@/lib/sendEmail";
 import { getCurrentDate } from '@/helpers/index'
 import { hash } from "bcryptjs"
 import { v4 } from "uuid";
+import { dbConnection } from "@/lib/mongodb"
+import User from "@/models/user"
 
 const handler = async (req, res) => {
 
@@ -11,7 +12,7 @@ const handler = async (req, res) => {
       success: false,
       toast: [{ message: 'Bad Request', type: 'error' }]
     })
-
+  await dbConnection().catch(err => res.json(err))
   const { email } = req.body;
 
 

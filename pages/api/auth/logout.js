@@ -1,9 +1,3 @@
-import { compare } from "bcryptjs"
-import { isUsername, isEmail } from "@/helpers";
-import { generateToken } from "@/lib/auth";
-import User from "@/models/user";
-import { dbConnection } from "@/lib/mongodb"
-
 const handler = async (req, res) => {
 
   if (req.method !== "POST")

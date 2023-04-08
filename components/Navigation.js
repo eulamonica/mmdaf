@@ -76,7 +76,15 @@ function UserExist({ user }) {
   }
   return (
     <>
-      <button className="btn btn-ghost mx-5" onClick={handleLogout}>Logout</button>
+      <div className="dropdown dropdown-hover dropdown-end">
+        <label tabIndex={0} className="flex justify-center content-center items-center bg-base-100 py-1 px-3  rounded-md">
+          <p className="prose p-3"> Hello {user.username}!</p>
+          <p className="w-5 h-5 p-5 flex justify-center items-center bg-accent text-black text-center rounded-full">{user.username.charAt(0)}</p>
+        </label>
+        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-32">
+          <li><a onClick={handleLogout}>Logout</a></li>
+        </ul>
+      </div>
     </>
   )
 }

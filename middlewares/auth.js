@@ -76,5 +76,4 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 }
 
 export default withAuth;
-
-
+export { checkAuth }

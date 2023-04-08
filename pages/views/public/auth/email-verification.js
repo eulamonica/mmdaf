@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
         props: { user: user || null },
       };
     },
-    false, true
+    true, true
   )(context.req, context.res);
 }
 
@@ -43,8 +43,12 @@ export default function EmailVerification({ user }) {
   }
   function getStartedHander(e) {
     e.preventDefault();
-    router.push('/views/public/auth/login');
+    if (!user)
+      router.push('/views/public/auth/login');
+    else
+      router.push('/views/public/dashboard');
   }
+
   useEffect(() => {
     const email_token = router.query['email-token']
     const email = router.query['email']
