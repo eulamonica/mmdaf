@@ -6,7 +6,7 @@ import useForm from "@/hooks/useForm";
 import { toast } from "react-toastify";
 import Router from "next/router";
 
-export default function VerifiedProfile({ user }) {
+export default function UserMainProfile({ user }) {
   const [isDisabled, setIsDisabled] = useState(false);
 
   function onSubmit(values) {
