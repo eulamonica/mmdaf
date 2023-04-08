@@ -36,7 +36,7 @@ const withAuth = (handler, allowed = false, publicPage = true) => async (req, re
 
 
   // if not logged in and going to private pages
-  if (!isLoggedIn && !publicPage && !req.url.includes(dahsboardDestination)) {
+  if ((!isLoggedIn && !publicPage && !req.url.includes(dahsboardDestination)) || req.url === '/') {
     return {
       redirect: {
         destination: dahsboardDestination,
