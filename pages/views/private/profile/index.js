@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
 import NotVerifiedProfile from "@/components/profile/NotVerifiedProfile";
-import VerifiedProfile from "@/components/profile/VerifiedProfile";
+import VerifiedProfile from '@/components/profile/VerifiedProfile';
 
 export async function getServerSideProps(context) {
   return withAuth(
