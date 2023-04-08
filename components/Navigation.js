@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import Link from "next/link"
 
 export default function Navigation({ children, user, themes, setTheme }) {
-  console.log(!user)
+
   return (
     <>
       <div className="navbar bg-base-200 shadow-sm">

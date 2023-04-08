@@ -19,6 +19,12 @@ function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, 
     );
   }
 
+  function emptyObject(objectValue, value) {
+    return Object.fromEntries(
+      Object.keys(objectValue).map((key) => [key, value])
+    );
+  }
+
   const [formValues, setFormValues] = useState(filledInitialValues(initialValues));
   const [errorValues, setErrorValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +89,7 @@ function useForm(apiUrl, action, initialValues, submitCallback, succesCallback, 
           if (onSuccessCallback.current) {
             onSuccessCallback.current(data);
           }
-          setErrorValues(data.errors);
+          setErrorValues(emptyObject(errorValues, []));
         } else {
           setErrorValues(data.errors);
           if (onErrorCallback.current) {
