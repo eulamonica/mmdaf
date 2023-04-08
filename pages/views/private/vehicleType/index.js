@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import withAuth from "@/middlewares/auth";
-import UnderConstruction from "@/components/profile/verifiedProfile";
+import UnderConstruction from "@/components/UnderConstruction";
 
 
 export async function getServerSideProps(context) {

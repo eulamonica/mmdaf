@@ -182,8 +182,3 @@ export default function VerifiedProfile({ user }) {
     </div>
   )
 }
-
-VerifiedProfile.getLayout = function getLayout(page) {
-  return <Layout user={page.props.user}> {page}</Layout>
-
-}
