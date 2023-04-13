@@ -92,7 +92,7 @@ export default function Login({ user }) {
                 isLoading={isUserLoading}
                 tooltip='This is only for valid users. Email us if you want to know more...'
               />
-              <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
+              <button type='submit' className='btn btn-primary mt-10 w-full'>Login</button>
               {isUserLoading && <progress className='progress progress-primary w-full'></progress>}
               <div className='my-10'>
                 <Link href='/views/public/auth/login' className="link link-primary">Doesnt have account? Register now</Link>

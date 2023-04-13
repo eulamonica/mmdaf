@@ -134,7 +134,7 @@ export default function ChangePassword({ user }) {
                   isLoading={isUserLoading}
                   tooltip='This is only for valid users. Email us if you want to know more...'
                 />
-                <button type='submit' className='btn btn-primary mt-10 w-full'>Register</button>
+                <button type='submit' className='btn btn-primary mt-10 w-full'>Change Password</button>
                 <div className="text-center mt-3">
                   <Link href='/views/public/auth/login' className="link link-primary">Already have an account? Login now</Link>
                   <br />

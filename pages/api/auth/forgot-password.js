@@ -62,7 +62,6 @@ const handler = async (req, res) => {
   if (sendEmailConfirmation.success === false) {
     return res.status(400).json({
       success: false,
-      errors: error,
       toast: [
         { message: 'Something wrong resending email', type: 'error' }
       ]

@@ -14,7 +14,7 @@ export default function Input({ type, name, placeholder, value, onChange, toolti
 
   }
   function hasError() {
-    return !IsEmptyObject(error) && error[name].length > 0
+    return error && !IsEmptyObject(error) && error[name].length > 0
   }
 
   function errorClass() {

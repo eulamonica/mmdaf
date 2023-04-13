@@ -89,10 +89,10 @@ export default function UserMainProfile({ user }) {
     onPasswordFinish)
 
   return (
-    <div className="flex justify-center h-screen my-10">
 
+    <div className="flex h-screen justify-center mt-10 mb-96 lg:mb-10">
       <div className="flex flex-col w-full lg:flex-row mx-4">
-        <div className="grid flex-grow h-3/5 card bg-base-300 rounded-box place-items-center py-10">
+        <div className="grid flex-grow h-5/6 card bg-base-300 rounded-box place-items-center py-10">
           {isUserLoading && <progress className='absolute top-0 rounded-t-lg progress progress-primary w-full rounded-none'></progress>}
           <form onSubmit={userSubmit}>
             <div className="font-bold text-primary"> Edit Profile </div>
@@ -128,14 +128,14 @@ export default function UserMainProfile({ user }) {
               isLoading={isUserLoading}
               tooltip="What's your last name?"
             />
-            <div className="card-actions justify-end mt-10">
+            <div className="card-actions justify-end mt-5">
               <button className="btn btn-primary" type="submit" disabled={isDisabled}>Save Changes</button>
             </div>
           </form>
         </div>
         <div className="divider lg:divider-horizontal mx-4"></div>
 
-        <div className="grid flex-grow h-3/5 card bg-base-300 rounded-box place-items-center py-10">
+        <div className="grid flex-grow h-5/6 card bg-base-300  rounded-box place-items-center py-10">
           {isUserPassowrdLoading && <progress className='absolute top-0 rounded-t-lg progress progress-primary w-full rounded-none'></progress>}
 
           <form onSubmit={userPassowrdSubmit}>
@@ -173,12 +173,12 @@ export default function UserMainProfile({ user }) {
               tooltip='Whats your old password?'
             />
 
-            <div className="card-actions justify-end mt-10">
+            <div className="card-actions justify-end mt-5">
               <button className="btn btn-accent" type="submit" disabled={isDisabled}>Save Changes</button>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
